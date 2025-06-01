@@ -3,5 +3,5 @@
 ## Run app
 
 ```sh
-docker compose -f auth/docker/docker-compose.yml -f calendar/docker/docker-compose.yml up -d
+docker compose -f docker/docker-compose.yml up -d
 ```

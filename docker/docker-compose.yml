@@ -1,0 +1,25 @@
+services:
+  auth:
+    container_name: auth
+    image: auth
+    build:
+      context: ./../auth
+      dockerfile: ./docker/app/Dockerfile
+    ports:
+      - ${PORT_AUTH}:90
+    volumes:
+      - ./../auth/:/var/www/html
+      - ./app/config/vhosts:/etc/apache2/sites-enabled
+      - ./app/config/dir/dir.conf:/etc/apache2/mods-enabled/dir.conf
+  calendar:
+    container_name: calendar
+    image: calendar
+    build:
+      context: ./../calendar
+      dockerfile: ./docker/app/Dockerfile
+    ports:
+      - ${PORT_CALENDAR}:90
+    volumes:
+      - ./../calendar/:/var/www/html
+      - ./app/config/vhosts:/etc/apache2/sites-enabled
+      - ./app/config/dir/dir.conf:/etc/apache2/mods-enabled/dir.conf

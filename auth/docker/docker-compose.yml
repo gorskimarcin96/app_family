@@ -1,7 +1,7 @@
 services:
-  sf_calendar:
-    container_name: sf_calendar
-    image: sf_calendar
+  auth:
+    container_name: auth
+    image: auth
     build:
       context: ./..
       dockerfile: ./docker/app/Dockerfile
