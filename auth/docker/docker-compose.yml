@@ -1,0 +1,13 @@
+services:
+  sf_calendar:
+    container_name: sf_calendar
+    image: sf_calendar
+    build:
+      context: ./..
+      dockerfile: ./docker/app/Dockerfile
+    ports:
+      - ${APP_EXPOSED_PORT}:90
+    volumes:
+      - ./../:/var/www/html
+      - ./app/config/vhosts:/etc/apache2/sites-enabled
+      - ./app/config/dir/dir.conf:/etc/apache2/mods-enabled/dir.conf

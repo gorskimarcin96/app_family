@@ -1,7 +1,7 @@
 # app_family
 
-## Run calendar app
+## Run app
 
 ```sh
-docker compose -f calendar/docker/docker-compose.yml up -d
+docker compose -f auth/docker/docker-compose.yml -f calendar/docker/docker-compose.yml up -d
 ```
