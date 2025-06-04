@@ -11,6 +11,13 @@ services:
       - ./../auth/:/var/www/html
       - ./app/config/vhosts:/etc/apache2/sites-enabled
       - ./app/config/dir/dir.conf:/etc/apache2/mods-enabled/dir.conf
+  auth_database:
+    container_name: auth_database
+    image: postgres:17.5
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME_AUTH}
+      POSTGRES_USER: ${DATABASE_USER_AUTH}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD_AUTH}
   calendar:
     container_name: calendar
     image: calendar
