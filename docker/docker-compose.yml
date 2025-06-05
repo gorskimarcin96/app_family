@@ -1,16 +1,28 @@
 services:
+  web:
+    container_name: web
+    image: web
+    build:
+      context: ./../web
+      dockerfile: ./../docker/node/Dockerfile
+    working_dir: /app
+    volumes:
+      - ./../web/:/app
+    ports:
+      - ${PORT_WEB}:5173
+    command: sh -c "npm install && npm run dev -- --host"
   auth:
     container_name: auth
     image: auth
     build:
       context: ./../auth
-      dockerfile: ./docker/app/Dockerfile
+      dockerfile: ./../docker/php/Dockerfile
     ports:
       - ${PORT_AUTH}:90
     volumes:
       - ./../auth/:/var/www/html
-      - ./app/config/vhosts:/etc/apache2/sites-enabled
-      - ./app/config/dir/dir.conf:/etc/apache2/mods-enabled/dir.conf
+      - ./php/config/vhosts:/etc/apache2/sites-enabled
+      - ./php/config/dir/dir.conf:/etc/apache2/mods-enabled/dir.conf
   auth_database:
     container_name: auth_database
     image: postgres:17.5
@@ -23,10 +35,10 @@ services:
     image: calendar
     build:
       context: ./../calendar
-      dockerfile: ./docker/app/Dockerfile
+      dockerfile: ./../docker/php/Dockerfile
     ports:
       - ${PORT_CALENDAR}:90
     volumes:
       - ./../calendar/:/var/www/html
-      - ./app/config/vhosts:/etc/apache2/sites-enabled
-      - ./app/config/dir/dir.conf:/etc/apache2/mods-enabled/dir.conf
+      - ./php/config/vhosts:/etc/apache2/sites-enabled
+      - ./php/config/dir/dir.conf:/etc/apache2/mods-enabled/dir.conf
