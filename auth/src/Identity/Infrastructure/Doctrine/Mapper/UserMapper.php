@@ -15,14 +15,14 @@ final readonly class UserMapper
         $doctrineUser->setId($domainUser->getId());
         $doctrineUser->setEmail($domainUser->getEmail());
         $doctrineUser->setRoles($domainUser->getRoles());
-        $doctrineUser->setPassword($domainUser->getPassword());
+        $doctrineUser->setPassword($domainUser->getHashedPassword());
 
         return $doctrineUser;
     }
 
     public static function toDomain(Entity $doctrineUser): User
     {
-        return new User(
+        return User::fromPersistence(
             new UserId($doctrineUser->getId()),
             new Email($doctrineUser->getEmail()),
             $doctrineUser->getPassword(),

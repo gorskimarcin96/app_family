@@ -32,7 +32,7 @@ final class CreateUserHandlerTest extends TestCase
             ->with(
                 $this->callback(
                     fn(User $user): bool => (string)$user->getEmail() === $email
-                        && $user->getPassword() === $hashedPassword,
+                        && $user->getHashedPassword() === $hashedPassword,
                 ),
             );
 

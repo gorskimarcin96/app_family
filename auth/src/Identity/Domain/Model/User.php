@@ -7,12 +7,27 @@ use App\Identity\Domain\ValueObject\Email;
 
 final readonly class User
 {
-    public function __construct(
+    private function __construct(
         private UserId $id,
         private Email $email,
-        private string $password,
+        private ?string $hashedPassword = null,
         private array $roles = ['ROLE_USER'],
     ) {
+    }
+
+    public static function preRegister(Email $email): User
+    {
+        return new self(UserId::generate(), $email);
+    }
+
+    public static function register(User $user, string $hashedPassword): User
+    {
+        return new self($user->id, $user->email, $hashedPassword, $user->roles);
+    }
+
+    public static function fromPersistence(UserId $id, Email $email, string $hashedPassword, array $roles): self
+    {
+        return new self($id, $email, $hashedPassword, $roles);
     }
 
     public function getId(): UserId
@@ -25,9 +40,10 @@ final readonly class User
         return $this->email;
     }
 
-    public function getPassword(): string
+    public function getHashedPassword(): string
     {
-        return $this->password;
+        return $this->hashedPassword
+            ?? throw new \LogicException(sprintf('Password for user %s is not exists.', $this->email));
     }
 
     public function getRoles(): array

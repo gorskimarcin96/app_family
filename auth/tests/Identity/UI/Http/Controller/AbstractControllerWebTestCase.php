@@ -2,11 +2,9 @@
 
 namespace App\Tests\Identity\UI\Http\Controller;
 
-use App\Identity\Domain\Repository\UserRepositoryInterface;
 use App\Identity\Domain\ValueObject\UserId;
 use App\Identity\Infrastructure\Doctrine\Entity\User;
 use App\Identity\Infrastructure\Doctrine\Mapper\UserMapper;
-use App\Identity\Infrastructure\Doctrine\Repository\UserRepository;
 use App\Identity\Infrastructure\Security\UserSecurity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;

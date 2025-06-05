@@ -24,7 +24,7 @@ final readonly class UserSecurity implements UserInterface, PasswordAuthenticate
 
     public function getPassword(): string
     {
-        return $this->user->getPassword();
+        return $this->user->getHashedPassword();
     }
 
     public function eraseCredentials(): void

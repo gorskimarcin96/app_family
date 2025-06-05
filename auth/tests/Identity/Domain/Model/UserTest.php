@@ -9,32 +9,40 @@ use PHPUnit\Framework\TestCase;
 
 final class UserTest extends TestCase
 {
-    public function testUserIsCreatedWithDefaults(): void
+    public function testUserFromPreRegister(): void
     {
-        $id = UserId::generate();
         $email = new Email('test@example.com');
-        $password = 'hashed_password';
 
-        $user = new User($id, $email, $password);
+        $user = User::preRegister($email);
 
-        $this->assertSame($id, $user->getId());
         $this->assertSame($email, $user->getEmail());
-        $this->assertSame($password, $user->getPassword());
         $this->assertEquals(['ROLE_USER'], $user->getRoles());
     }
 
-    public function testUserIsCreatedWithCustomData(): void
+    public function testUserFromRegister(): void
+    {
+        $email = new Email('test@example.com');
+        $password = 'hashed_password';
+
+        $user = User::register(User::preRegister($email), $password);
+
+        $this->assertSame($email, $user->getEmail());
+        $this->assertIsString($user->getHashedPassword());
+        $this->assertEquals(['ROLE_USER'], $user->getRoles());
+    }
+
+    public function testUserFromDatabase(): void
     {
         $id = new UserId('64c8acf0-2a18-4c7d-b164-a5d0d3048b8e');
         $email = new Email('admin@example.com');
         $password = 'admin_pass';
         $roles = ['ROLE_ADMIN', 'ROLE_USER'];
 
-        $user = new User($id, $email, $password, $roles);
+        $user = User::fromPersistence($id, $email, $password, $roles);
 
         $this->assertSame($id, $user->getId());
         $this->assertSame($email, $user->getEmail());
-        $this->assertSame($password, $user->getPassword());
+        $this->assertSame($password, $user->getHashedPassword());
         $this->assertEquals($roles, $user->getRoles());
     }
 }
