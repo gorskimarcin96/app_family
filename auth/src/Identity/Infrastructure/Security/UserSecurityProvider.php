@@ -2,8 +2,10 @@
 
 namespace App\Identity\Infrastructure\Security;
 
+use App\Identity\Domain\Exception\InvalidEmailException;
 use App\Identity\Domain\Repository\UserRepositoryInterface;
 use App\Identity\Domain\ValueObject\Email;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -16,7 +18,11 @@ final readonly class UserSecurityProvider implements UserProviderInterface
 
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-        $user = $this->userRepository->findByEmail(new Email($identifier));
+        try {
+            $user = $this->userRepository->findByEmail(new Email($identifier));
+        } catch (InvalidEmailException $exception) {
+            throw new BadRequestException($exception->getMessage());
+        }
 
         return $user
             ? new UserSecurity($user)

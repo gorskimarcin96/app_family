@@ -40,9 +40,22 @@ final class AuthControllerTest extends AbstractControllerWebTestCase
             method: 'POST',
             uri: '/api/login',
             server: ['CONTENT_TYPE' => 'application/json'],
+            content: json_encode(['email' => 'invalid.email', 'password' => 'password']),
+        );
+
+        self::assertResponseStatusCodeSame(JsonResponse::HTTP_BAD_REQUEST);
+    }
+
+    public function testLoginNotExistsEmail(): void
+    {
+        $this->getApiClient()->request(
+            method: 'POST',
+            uri: '/api/login',
+            server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode(['email' => 'not@exists.com', 'password' => 'password']),
         );
 
         self::assertResponseStatusCodeSame(JsonResponse::HTTP_UNAUTHORIZED);
     }
+
 }

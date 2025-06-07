@@ -2,12 +2,14 @@
 
 namespace App\Identity\Domain\ValueObject;
 
+use App\Identity\Domain\Exception\InvalidEmailException;
+
 final readonly class Email
 {
     public function __construct(private string $value)
     {
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException('Invalid email');
+            throw new InvalidEmailException($value);
         }
     }
 
